@@ -4,7 +4,6 @@
         "endpoint": "https://localhost:5444",
         "default_layout": "none",
         "default_session": "$0",
-        "log_file": "/tmp/tmux-layout-plugin.log",
         "sleep": 5
       },
       "layout": {
