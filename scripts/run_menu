@@ -1,0 +1,109 @@
+#/usr/bin/bash
+CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+source "${CURRENT_DIR}/variables.sh"
+
+get_tmux_option() {
+	local option="$1"
+	local option_value
+	option_value=$(tmux show-option -gqv "$option")
+	echo "$option_value"
+}
+
+
+set_tmux_option() {
+	local option=$1
+	local value=$2
+	tmux set-option -gq  "$option" "$value"
+}
+
+
+unset_tmux_option() {
+	local option_name=$1
+	tmux set-option -gqu "$option_name"
+}
+
+# FIX THIS ...
+check_command() {
+	CHECK_CMD="$(which "${PYCMD}")"
+	[ -z "${CHECK_CMD}" ] && echo "1" || echo "0"
+}
+
+
+get_current_session() {
+	tmux display-message -p "#S"
+}
+
+
+get_main_pane() {
+	tmux display-message -p "#{pane_id}"
+}
+
+
+build_command() {
+	local py="$1"
+	#validate path
+	local path="$2"
+	local session="$3"
+	local target_pane="$4"
+	echo "${py}" "${path}" -s "${session}" -p "${target_pane}"
+
+}
+
+
+current_pane_is_menu() {
+	local var
+	var="$(get_tmux_option "${LAYOUT_MENU_PREFIX}")"
+	log "${var}"
+	[ -n "$var" ]
+}
+
+
+exists() {
+	local pane
+	pane="$1"
+	if [ -n "$pane" ]; then
+		result="$(tmux list-panes | grep "${pane}")"
+		log "[exist registered pane?] $result"
+	else
+		result=""
+	fi
+	[ -n  "$result" ]
+}
+
+
+select_layout() {
+	SESSION="$(get_current_session)"
+	TARGET_PANE="$(get_main_pane)"
+	cmd="$(build_command "${PYCMD}" "${MENU_PATH}" "${SESSION}" "${TARGET_PANE}")"
+	if  ! current_pane_is_menu; then
+		log "${cmd}"
+		pane_id="$(tmux split-window -h -l "$SIZE" -c "$TARGET_DIR" -P -F "#{pane_id}" "${cmd}")"
+		set_tmux_option "${LAYOUT_MENU_PREFIX}" "${pane_id}"
+	fi
+}
+
+
+log() {
+	msg="$1"
+
+	target="/tmp/${LOG_TARGET}"
+	timestamp="$(date +%T)"
+	function_caller="${FUNCNAME[1]}"
+	
+	echo "$timestamp - $function_caller - $msg" >> "$target"
+}
+
+
+main() {
+	pane="$(get_tmux_option "${LAYOUT_MENU_PREFIX}")"
+	log "[FOUND REGISTERED MENU] - $pane"
+	#if [[ $(check_command)  && ! $(exists "$pane") ]]; then
+	if ! exists "$pane"; then # && check_command; then
+		unset_tmux_option "${LAYOUT_MENU_PREFIX}"
+		log "[Running select layout]"
+		select_layout
+	fi
+	
+}
+main
