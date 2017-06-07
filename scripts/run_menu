@@ -72,13 +72,17 @@ exists() {
 }
 
 
+#TODO: Define LAYOUT-NAME as basename of the file ....
 select_layout() {
 	SESSION="$(get_current_session)"
 	TARGET_PANE="$(get_main_pane)"
 	cmd="$(build_command "${PYCMD}" "${MENU_PATH}" "${SESSION}" "${TARGET_PANE}")"
 	if  ! current_pane_is_menu; then
 		log "${cmd}"
-		pane_id="$(tmux split-window -h -l "$SIZE" -c "$TARGET_DIR" -P -F "#{pane_id}" "${cmd}")"
+		pane_id="$(tmux new-window -c "${TARGET_DIR}" -n LAYOUT-NAME -P -F "#{pane_id}" "${cmd}")"
+		tmux select-window -l
+		tmux join-pane -hb -l "${SIZE}" -s "$pane_id"
+
 		set_tmux_option "${LAYOUT_MENU_PREFIX}" "${pane_id}"
 	fi
 }
