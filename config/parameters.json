@@ -1,16 +1,9 @@
 {
 	"globals": {
-		"layout_home": "/home/fmount/tmux-menu-files",
+		"layout_home": "~/.tmux/plugins/tmux-layout-plugin/layouts/",
         "endpoint": "https://localhost:5444",
         "default_layout": "none",
         "default_session": "$0",
         "sleep": 5
-      },
-      "layout": {
-        "x": "12",
-        "y": "5",
-        "z": "cw",
-        "test": "",
-        "k": false
-	}
+      }
 }

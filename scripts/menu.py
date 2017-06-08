@@ -17,6 +17,7 @@ import libtmux
 import json
 import config
 import logging
+import os
 
 
 option_cli = argparser(description="Build curses dynamic menu utility")
@@ -38,7 +39,16 @@ class Dyn_menu(Parser):
 
 	
 	def get_layout_list(self, path):
+		'''
+		@path	is intented as an absolute one, so user need to care about
+				its value on the config/parameters.json. If it starts with
+				~/ this function automatically expands the /home/<user>/
+		'''
 		try:
+			if path.startswith("~/"):
+				self.logger.info("[RESOLVING PATH] %s" % path)
+				path = (os.path.expanduser('~') + '/' + path.split("~/")[1])
+
 			layouts = [f for f in listdir(path) if isfile(join(path, f))]
 			self.logger.info("[Dyn_menu] Loading %s " % layouts)
 			return layouts

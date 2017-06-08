@@ -1,0 +1,38 @@
+# Load default .tmux.conf
+source-file ~/.tmux.conf
+
+split-window -v -p 15 -c ~/
+send-keys 'ls -lart' Enter
+split-window -h -p 50 -c ~/
+
+# Select pane 0
+select-pane -t 0
+
+split-window -v -p 15 -c ~/
+split-window -h -p 50 -c ~/
+
+# Select vim pane 
+select-pane -t 0
+split-window -v -p 50 -c ~/
+
+
+
+# Attach watcher commands on the created panes
+select-pane -t 0
+send-keys 'for i in $(ls);do echo $i; sleep 2; done' Enter
+send-keys 'echo "Done"' Enter
+
+select-pane -t 1
+send-keys 'date +%H:%m:%s' Enter
+
+select-pane -t 2
+send-keys 'ping -c3 8.8.8.8' Enter
+
+select-pane -t 3
+send-keys 'cat /etc/machine-id' Enter
+
+select-pane -t 4
+send-keys 'uname -r' Enter
+
+select-pane -t 5
+send-keys 'yes' Enter
