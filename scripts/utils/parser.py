@@ -31,7 +31,20 @@ class Parser(object):
 		if config is None:
 			raise Exception("[Parser]: json config not found on filesystem")
 		
-		cfiles = list(filter(lambda x: path.exists(x), [config[i] for i in config.keys()]))
+
+		#cfiles = list(filter(lambda x: path.exists(x), [config[i] for i in config.keys()]))
+		cf = []
+		
+		for conf in config.keys():
+			if config.get(conf).startswith("~/"):
+				value = path.expanduser("~") + '/' + config.get(conf).split("~/")[1]
+			cf.append(value)
+		
+		#[cf.append(v) if config.get(c).startswith("~/") v = path.expanduser("~") + '/' + \
+		#		config.get(c).split("~/")[1] for c in config.keys()]
+		
+		cfiles = list(filter(lambda x: path.exists(x), cf))
+
 		if(len(cfiles) == 0):
 			raise Exception("Json config not found on filesystem")
 
