@@ -3,7 +3,7 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 source "${CURRENT_DIR}/variables.sh"
 
-MENU_PATH="${CURRENT_DIR}/menu.py"
+MENU_PATH="${CURRENT_DIR}/menu/menu.py"
 
 get_tmux_option() {
 	local option="$1"
