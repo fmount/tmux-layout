@@ -1,6 +1,6 @@
 {
 	"globals": {
-		"layout_home": "~/.tmux/plugins/tmux-layout-plugin/layouts/",
+		"layout_home": "~/.tmux/plugins/tmux-layout/layouts/",
         "endpoint": "https://localhost:5444",
         "default_layout": "none",
         "default_session": "$0",

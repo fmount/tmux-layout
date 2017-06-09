@@ -8,10 +8,11 @@ source "$SCRIPTS_DIR/variables.sh"
 
 layout_options() {
 	
-	tmux bind-key "${MENU_KEY}" run-shell "${RUN_MENU}"
+	tmux bind-key "${MENU_KEY}" run-shell "${SCRIPTS_DIR}/${RUN_MENU}"
 }
 
 
 main() {
 	layout_options
 }
+main
