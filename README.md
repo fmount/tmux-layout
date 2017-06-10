@@ -68,17 +68,17 @@ In the layouts/ provided directory inside this package there are a couple of pre
 This path is called **layout\_home** and is defined in the **config/parameters.json** file.
 Thus, looking at the directory tree of the plugin:
 
-.
-├── config
-    └── parameters.json
-├── docs
-├── layouts
-├── scripts
-│   ├── dist
-│   └── menu
-│       ├── config -> ../../config
-│       └── utils
-└── test
+    .
+    ├── config
+        └── parameters.json
+    ├── docs
+    ├── layouts
+    ├── scripts
+    │   ├── dist
+    │   └── menu
+    │       ├── config -> ../../config
+    │       └── utils
+    └── test
 
 Users can customize the layout_home and the others parameters just modifying the parameters.json file that come like this:
 
